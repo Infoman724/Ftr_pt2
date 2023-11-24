@@ -37,38 +37,9 @@ namespace Ftr_pt2.Controllers
             return employee;
         }
 
-        // POST: api/employees/login
-        [HttpPost("login")]
-        public async Task<ActionResult<Employee>> EmployeeLogin(Employee employee)
-        {
-            var existingEmployee = await _context.Employees
-                .FirstOrDefaultAsync(e => e.Email == employee.Email && e.Password == employee.Password);
-
-            if (existingEmployee == null)
-            {
-                return NotFound("Invalid email or password");
-            }
-
-            // Добавьте проверку на роль
-            if (existingEmployee.Access == "admin" && employee.Access != "admin")
-            {
-                return BadRequest("You are an administrator. Are you sure you want to log in as a regular employee?");
-            }
-
-            if (existingEmployee.Access == "employee" && employee.Access == "admin")
-            {
-                return BadRequest("You are a regular employee and cannot log in as an administrator.");
-            }
-
-            // Можно добавить дополнительную логику входа, например, создание токена
-
-            return Ok(existingEmployee);
-        }
-
-
         // POST: api/employees
         [HttpPost]
-        public async Task<ActionResult<Employee>> RegisterEmployee(Employee employee)
+        public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
         {
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
