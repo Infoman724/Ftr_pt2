@@ -11,8 +11,7 @@
         public string Password { get; set; }
         public string Access { get; set; }
 
-        public DateTime EntryTime { get; set; } 
-        public DateTime ExitTime { get; set; } 
+
     }
 
 

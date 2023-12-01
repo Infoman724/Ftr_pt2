@@ -9,6 +9,7 @@ namespace Ftr_pt2.Data
 
 
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<WorkTime> WorkTimes { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

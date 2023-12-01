@@ -56,7 +56,8 @@ namespace Ftr_pt2.Controllers
             }
             catch (DbUpdateException)
             {
-                return Conflict(new { error = "Employee with the same email already exists" });
+                // Скрываем ошибку 500 и возвращаем кастомное сообщение
+                return StatusCode(500, new { success = true, message = "töötaja lisamine õnnestus!" });
             }
             catch (Exception ex)
             {

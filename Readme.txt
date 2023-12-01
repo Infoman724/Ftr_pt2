@@ -1,12 +1,1 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Ftr_pt2
-{
-    public class Readme : Controller
-    {
-        public IActionResult Index()
-        {
-            return View();
-        }
-    }
-}
+﻿Закончил на том что попросил у даньки примеры рабочего кода в попытках исправить ошибку 500 при регистрации нового пользователя
