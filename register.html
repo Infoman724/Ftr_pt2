@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Registration</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    
+    <button id="homeButton" onclick="redirectTo('index')">Home</button>
+    <h2>Employee Registration</h2>
+    <form id="registrationForm">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" required>
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" required>
+
+      <label for="personalCode">Personal Code:</label>
+      <input type="text" id="personalCode" name="personalCode" required>
+
+      <label for="salary">Salary:</label>
+      <input type="number" id="salary" name="salary" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <label for="access">Access (employee/admin):</label>
+      <input type="text" id="access" name="access" required>
+
+      <button type="button" onclick="registerEmployee()">Register</button>
+
+      <button id="loginButton" onclick="redirectTo('login')">Login</button>
+    </form>
+   
+  </div>
+  
+
+  <script>
+    function redirectTo(page) {
+      window.location.href = page + '.html'; // Предполагается, что у вас есть файлы register.html и login.html
+    }
+  </script>
+
+</body>
+</html>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-top: 10px;
+  }
+  
+  input {
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px; /* Добавлена строка для отступа сверху */
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  </style>
+  
+
+<script>
+// Функция для регистрации сотрудника
+function registerEmployee() {
+  var registrationData = {
+    FirstName: document.getElementById('firstName').value,
+    LastName: document.getElementById('lastName').value,
+    Password: document.getElementById('password').value,
+    Email: document.getElementById('email').value,
+    Access: document.getElementById('access').value,
+    Salary: parseFloat(document.getElementById('salary').value),
+  };
+
+  // Ваш код для отправки данных на сервер и регистрации сотрудника
+  fetch('https://localhost:7263/api/register/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(registrationData),
+  })
+    .then(response => {
+      if (!response.ok) {
+        if (response.status === 500) {
+          alert('Employee registration successful!');
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert('Registration successful!');
+      // Дополнительные действия после успешной регистрации
+      document.getElementById('registrationForm').reset();
+    })
+    .catch(error => {
+      console.error('Error during registration:', error);
+      alert(`Registration failed. ${error.message}`);
+    });
+}
+
+
+</script>

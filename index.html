@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login or Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Your App</h1>
+  <p>Choose an option:</p>
+
+  <button onclick="redirectTo('register')">Register</button>
+  <button onclick="redirectTo('login')">Login</button>
+
+  <script>
+    function redirectTo(page) {
+      window.location.href = page + '.html'; // Предполагается, что у вас есть файлы register.html и login.html
+    }
+  </script>
+</body>
+</html>
