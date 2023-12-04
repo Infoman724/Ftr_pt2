@@ -5,4 +5,4 @@ On võimalik oma isiklikud andmed muuta/lisada.
 On võimalik lisada uue alguse/lõpu aja.
 
 Для сотрудника на странице Work.html
-проблемы были с отображением
+проблемы были с отображением изза local storage
