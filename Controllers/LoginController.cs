@@ -30,17 +30,13 @@ namespace Ftr_pt2.Controllers
                     return NotFound(new { error = "Invalid email or password" });
                 }
 
-                // Дополнительная логика, если нужно
-
-                // Возвращаем информацию о сотруднике
+                // Return the employee ID along with other necessary information
                 return Ok(new
                 {
                     success = true,
                     message = "Login successful",
                     employeeId = employee.EmployeeId,
-                    firstName = employee.FirstName,
-                    lastName = employee.LastName,
-                    // Другие поля, которые вы хотите вернуть
+                    // Other fields you want to return
                 });
             }
             catch (Exception ex)
@@ -48,5 +44,6 @@ namespace Ftr_pt2.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+
     }
 }

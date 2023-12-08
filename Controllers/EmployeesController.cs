@@ -47,34 +47,31 @@ namespace Ftr_pt2.Controllers
             return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
         }
 
-        // PUT: api/employees/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        [HttpPut("muuda/{id}")]
+        public ActionResult<List<Employee>> PutEmployee(int id, [FromBody] Employee updatedEmployee)
         {
-            if (id != employee.EmployeeId)
+            var employee = _context.Employees.Find(id);
+
+            if (employee == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
+            // Update the properties of the employee
+            employee.FirstName = updatedEmployee.FirstName;
+            employee.LastName = updatedEmployee.LastName;
+            employee.PersonalCode = updatedEmployee.PersonalCode;
+            employee.Salary = updatedEmployee.Salary;
+            employee.Email = updatedEmployee.Email;
+            employee.Password = updatedEmployee.Password;
+            employee.Access = updatedEmployee.Access;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmployeeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            // Update the employee in the database
+            _context.Employees.Update(employee);
+            _context.SaveChanges();
 
-            return NoContent();
+            // Return the updated list of employees (you might want to customize this based on your requirements)
+            return Ok(_context.Employees);
         }
 
         // DELETE: api/employees/5
