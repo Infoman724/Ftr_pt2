@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+</head>
+<body>
+
+    <h1>Employee Management</h1>
+
+    <table id="employeeTable" border="1">
+        <!-- Table header -->
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Personal Code</th>
+            <th>Salary</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Access</th>
+            <th>Action</th>
+        </tr>
+
+        <!-- Table body will be populated dynamically using JavaScript -->
+    </table>
+
+    <script>
+        // Fetch employee data from the API and populate the table
+        async function fetchEmployees() {
+            const response = await fetch('https://localhost:7263/api/Employees');
+            const employees = await response.json();
+
+            const table = document.getElementById('employeeTable');
+
+            employees.forEach(employee => {
+                const row = table.insertRow();
+
+                // Insert data into each cell
+                Object.keys(employee).forEach(key => {
+                    const cell = row.insertCell();
+                    cell.textContent = employee[key];
+                });
+
+                // Add an "Edit" button with an event listener
+                const editCell = row.insertCell();
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => editEmployee(employee);
+                editCell.appendChild(editButton);
+            });
+        }
+
+        // Function to edit an employee
+        function editEmployee(employee) {
+            const table = document.getElementById('employeeTable');
+            const rowIndex = Array.from(table.rows).findIndex(row => row.contains(event.target));
+
+            // Replace text content with input fields for editing
+            Object.keys(employee).forEach((key, index) => {
+                const cell = table.rows[rowIndex].cells[index];
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = employee[key];
+                cell.textContent = '';
+                cell.appendChild(input);
+            });
+
+            // Add a "Save" button for the user to save changes
+            const saveCell = table.rows[rowIndex].insertCell();
+            const saveButton = document.createElement('button');
+            saveButton.textContent = 'Save';
+            // Pass the 'employee' object and 'rowIndex' to the saveEmployee function
+            saveButton.onclick = () => saveEmployee(employee, rowIndex);
+            saveCell.appendChild(saveButton);
+        }
+
+        // Function to save changes to an employee
+async function saveEmployee(employee, rowIndex) {
+    const table = document.getElementById('employeeTable');
+    const updatedEmployee = {};
+
+    // Collect updated data from input fields
+    Object.keys(employee).forEach((key, index) => {
+        updatedEmployee[key] = table.rows[rowIndex].cells[index].querySelector('input').value;
+    });
+
+    // Get the correct employeeId
+    const employeeId = updatedEmployee.EmployeeId;
+
+    // Update the data in the table
+    Object.keys(updatedEmployee).forEach((key, index) => {
+        table.rows[rowIndex].cells[index].textContent = updatedEmployee[key];
+    });
+
+    // Implement the API call to update the employee on the server
+    await fetch(`https://localhost:7263/api/Employees/muuda/${employeeId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedEmployee),
+    });
+
+    // Remove the "Save" button
+    table.rows[rowIndex].deleteCell(table.rows[rowIndex].cells.length - 1);
+}
+
+
+        // Run the fetchEmployees function when the page loads
+        fetchEmployees();
+    </script>
+
+</body>
+</html>

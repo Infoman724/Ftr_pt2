@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <button type="button" onclick="validateLogin()">Login</button>
+    </form>
+
+    <script>
+        function validateLogin() {
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            // Создаем объект с данными для отправки на сервер
+            var credentials = {
+                email: email,
+                password: password
+            };
+
+            // Отправляем данные на сервер для проверки
+            fetch('https://localhost:7263/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(credentials),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Проверяем результат от сервера
+                if (data.success) {
+                    // Переход на страницу work.html
+                    window.location.href = '/work.html';
+                } else {
+                    alert('Неверные email или пароль. Попробуйте снова.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
